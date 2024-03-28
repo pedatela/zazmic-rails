@@ -1,0 +1,27 @@
+version: '3'
+services:
+  rails:
+    build: ./backend
+    command: rails s -b 0.0.0.0
+    container_name: zazmic_rails_backend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/opt/app
+    environment: 
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+  db:
+    image: postgres:12.2
+    ports: 
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+    volumes:
+      - ./backend/postgres_data:/var/lib/postgresql/data
+volumes:
+  backend:
